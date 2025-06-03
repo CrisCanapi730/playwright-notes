@@ -1,25 +1,22 @@
 import { test, expect } from '@playwright/test';
 
-// test('has title', async ({ page }) => {
-//   await page.goto('https://playwright.dev/');
-
-//   // Expect a title "to contain" a substring.
-//   await expect(page).toHaveTitle(/Playwright/);
-// });
-
-// test('get started link', async ({ page }) => {
-//   await page.goto('https://playwright.dev/');
-
-//   // Click the get started link.
-//   await page.getByRole('link', { name: 'Get started' }).click();
-
-//   // Expects page to have a heading with the name of Installation.
-//   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-// });
-
 test('test 1', async ({page}) =>{
+  // vamos a la pagina web que queremos probar
   await page.goto('https://www.mercadolibre.com.bo/#from=homecom');
+  // encuentra el buscador mediante un localizador y lo llena con Iphone
   await page.locator('input[id=\'cb1-edit\']').fill('Iphone');
+  // presiona la tecla enter
   await page.keyboard.press('Enter');
+  // despues de la busqueda espera que haya una lista que sea visible
+  await expect(page.locator('//ol[contains(@class, \'ui-search-layout\')] ')).toBeVisible();
   await page.pause();
+  // obtiene todo el texto y lo alamcena en la variable titles
+  const titles = await page.locator('//ol[contains(@class, \'ui-search-layout\')] //li//a').allInnerTexts();
+  // Escribe el numero total de titulos encontrados
+  console.log(`The total number of results is: ${titles.length}`);
+  // itera sobre los titulos encontrados y los muestra
+  for(let title of titles){
+    console.log(`The title is: ${title}`);
+  }
 })
+
